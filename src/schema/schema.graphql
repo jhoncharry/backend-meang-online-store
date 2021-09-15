@@ -1,0 +1,119 @@
+"Definitions of root types"
+type Query {
+  "Database user registration list (Clients / Admins)"
+  users: ResultUsers
+  "User login"
+  login(email: String!, password: String!): ResultLogin
+  "Authentication by token"
+  me: ResultUserToken
+}
+
+type Mutation {
+  register(userInput: UserCreateInput!): ResultUser
+}
+
+"Interface to specify the required properties in the response."
+interface Result {
+  "Operation status"
+  status: Boolean!
+  "Operation message to provide feedback"
+  message: String!
+}
+
+type ResultUser implements Result {
+  "Operation status"
+  status: Boolean!
+  "Operation message to provide feedback"
+  message: String!
+  "Database user registration list (Clients / Admins)"
+  user: User
+}
+
+type ResultUsers implements Result {
+  "Operation status"
+  status: Boolean!
+  "Operation message to provide feedback"
+  message: String!
+  "Database user registration list (Clients / Admins)"
+  users: [User!]!
+}
+
+type ResultLogin implements Result {
+  "Operation status"
+  status: Boolean!
+  "Operation message to provide feedback"
+  message: String!
+  "Token information"
+  token: String
+}
+
+type ResultUserToken implements Result {
+  "Operation status"
+  status: Boolean!
+  "Operation message to provide feedback"
+  message: String!
+  "user information from the token"
+  user: UserToken
+}
+
+"""
+Detailed user information
+Let's consider the following:
+* email gonna be the database client user.
+* birthday and registration date in ISO format.
+"""
+type User {
+  "Unique user identification"
+  _id: ID!
+  "user's name"
+  name: String!
+  "user's lastname"
+  lastname: String!
+  "user's email"
+  email: String!
+  "registration date"
+  registerDate: String!
+  "user's birthday - over 18 years old only"
+  birthday: String!
+  "user permissions"
+  role: Role!
+}
+"""
+Detailed user information by token
+"""
+type UserToken {
+  "Unique user identification"
+  _id: ID!
+  "user's name"
+  name: String!
+  "user's lastname"
+  lastname: String!
+  "user's email"
+  email: String!
+  "user permissions"
+  role: Role!
+}
+
+"Input to add user's data"
+input UserCreateInput {
+  "Id, but not required"
+  _id: ID
+  "user's name"
+  name: String!
+  "user's lastname"
+  lastname: String!
+  "user's email"
+  email: String!
+  "user's password"
+  password: String!
+  "user's birthday - over 18 years old only"
+  birthday: String!
+  "user permissions"
+  role: Role = CLIENT
+}
+
+"User Roles"
+enum Role {
+  CLIENT
+  ADMIN
+}
