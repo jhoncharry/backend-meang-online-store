@@ -1,0 +1,9 @@
+"Definitions of root types"
+type Query {
+  "Database user registration list (Clients / Admins)"
+  users: ResultUsers
+  "User login"
+  login(email: String!, password: String!): ResultLogin
+  "Authentication by token"
+  me: ResultUserToken
+}

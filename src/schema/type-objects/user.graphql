@@ -1,0 +1,37 @@
+"""
+Detailed user information
+Let's consider the following:
+* email gonna be the database client user.
+* birthday and registration date in ISO format.
+"""
+type User {
+  "Unique user identification"
+  _id: ID!
+  "user's name"
+  name: String!
+  "user's lastname"
+  lastname: String!
+  "user's email"
+  email: String!
+  "registration date"
+  registerDate: String!
+  "user's birthday - over 18 years old only"
+  birthday: String!
+  "user permissions"
+  role: Role!
+}
+"""
+Detailed user information by token
+"""
+type UserToken {
+  "Unique user identification"
+  _id: ID!
+  "user's name"
+  name: String!
+  "user's lastname"
+  lastname: String!
+  "user's email"
+  email: String!
+  "user permissions"
+  role: Role!
+}

@@ -47,7 +47,6 @@ const user_query: IResolvers = {
 
     // me
     async me(_, __, { currentUser }) {
-      console.log(currentUser);
       if (!currentUser) throw new NotAuthorizedError();
       return customResponse(true, "Authenticated user", { user: currentUser });
     },
