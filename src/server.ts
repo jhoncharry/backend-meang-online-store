@@ -24,7 +24,7 @@ async function init() {
   const app = express();
 
   // CORS config
-  app.use(cors());
+  // app.use(cors());
 
   // Compression - Optimize request performance
   app.use(compression());
@@ -48,7 +48,10 @@ async function init() {
     debug: false,
   });
   await server.start();
-  server.applyMiddleware({ app });
+  server.applyMiddleware({
+    app,
+    cors: { origin: "http://localhost:4200", credentials: true },
+  });
 
   app.get(
     "/",
