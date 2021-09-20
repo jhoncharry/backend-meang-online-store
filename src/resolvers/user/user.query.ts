@@ -45,6 +45,14 @@ const user_query: IResolvers = {
       return customResponse(true, "User logged", { token });
     },
 
+    //Singout
+    async logout(_, __, { req }) {
+      if (!req) throw new BadRequestError("Unable to logout");
+      req.session = null;
+
+      return { status: true, message: "logout" };
+    },
+
     // me
     async me(_, __, { currentUser }) {
       if (!currentUser) throw new NotAuthorizedError();
