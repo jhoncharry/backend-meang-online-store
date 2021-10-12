@@ -42,15 +42,32 @@ const user_query: IResolvers = {
         jwt: token,
       };
 
-      return customResponse(true, "User logged", { token });
+      return customResponse(true, "User logged", { token, user: existingUser });
     },
 
     //Singout
     async logout(_, __, { req }) {
-      if (!req) throw new BadRequestError("Unable to logout");
+      if (!req.session.jwt) throw new BadRequestError("Unable to logout");
       req.session = null;
 
       return { status: true, message: "logout" };
+    },
+
+    //Renew token
+    async renewToken(_, __, { req, currentUser }) {
+      if (!currentUser) throw new NotAuthorizedError();
+
+      // Generate Token - JWT
+      const token = await JWT.sign({ user: currentUser });
+      // Store it on session object
+      req.session = {
+        jwt: token,
+      };
+
+      return customResponse(true, "New token was generated", {
+        token,
+        user: currentUser,
+      });
     },
 
     // me

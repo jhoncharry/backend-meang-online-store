@@ -1,8 +1,22 @@
 import Joi from "joi";
 import { UserRoles } from "../../models/types/user-roles";
 
-const name = Joi.string().alphanum().min(3).max(38).required();
-const lastname = Joi.string().alphanum().min(3).max(38).required();
+/* 
+Good example of name properity
+
+const name = Joi.string()
+  .regex(/^[a-zA-Z]+(([\'\,\.\- ][a-zA-Z ])?[a-zA-Z]*)*$/)
+  .min(3)
+  .max(38)
+  .required()
+  .messages({
+    "string.pattern.base": "Must be a valid name",
+  }); 
+  
+  */
+
+const name = Joi.string().min(3).max(38).required();
+const lastname = Joi.string().min(3).max(38).required();
 const email = Joi.string().email().required();
 const password = Joi.string().alphanum().min(3).max(38).required();
 const birthday = Joi.string();

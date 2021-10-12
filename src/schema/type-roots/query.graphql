@@ -8,4 +8,6 @@ type Query {
   me: ResultUserToken
   "Logout"
   logout: ResultLogout
+  "Renew token"
+  renewToken: ResultUserToken
 }

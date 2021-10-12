@@ -23,7 +23,7 @@ export class JWT {
         { user: data.user },
         this.secretKey,
         {
-          expiresIn: "24h",
+          expiresIn: "1h",
         },
         (error, token) => {
           if (error) {
