@@ -3,8 +3,6 @@ type ResultLogin implements Result {
   status: Boolean!
   "Operation message to provide feedback"
   message: String!
-  "Token information"
-  token: String
   "User information"
   user: User
 }

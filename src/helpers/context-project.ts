@@ -1,3 +1,4 @@
+import { User } from "../models/user.model";
 import { JWT } from "./jwt";
 
 const contextModel = async ({ req, connection }: any) => {
@@ -6,9 +7,17 @@ const contextModel = async ({ req, connection }: any) => {
 
   return {
     req,
-    token,
-    currentUser,
+    currentUser: await getCurrentUser(currentUser),
   };
+};
+
+const getCurrentUser = async (currentUser: any) => {
+  if (currentUser) {
+    return await User.findById(currentUser._id)
+      .select("-registerDate -birthday")
+      .then((currentUser) => currentUser)
+      .catch(() => null);
+  }
 };
 
 export default contextModel;

@@ -1,13 +1,22 @@
 "Definitions of root types"
 type Query {
-  "Database user registration list (Clients / Admins)"
-  users: ResultUsers
   "User login"
   login(email: String!, password: String!): ResultLogin
-  "Authentication by token"
-  me: ResultUserToken
   "Logout"
   logout: ResultLogout
   "Renew token"
   renewToken: ResultUserToken
+  "Authentication by token"
+  me: ResultUserToken
+  "Database users registration list (Clients / Admins)"
+  users: ResultUsers
+  "Get user by id"
+  user(_id: ID!): ResultUser
+  "Get genre by ID"
+  genre(id: ID!): ResultGenre
+  "Get genres"
+  genres: ResultGenres
 }
+
+# TODO: Check login, renewToken and me types, because we can simplify that types, for example: Result login return User that has the same values from UserToken
+# TODO: me Types has ResultUserToken where there's a UserToken but maybe in future we need to add more field, the best idea is set  User type

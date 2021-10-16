@@ -1,79 +1,38 @@
 import { IResolvers } from "@graphql-tools/utils";
 
-import { InternalServerError } from "../../common/errors/internal-server-error";
-import { customResponse } from "../../common/response/custom-response";
-import { BadRequestError } from "../../common/errors/bad-request-error";
-
-import { User } from "../../models/user.model";
-import { JWT } from "../../helpers/jwt";
-import { NotAuthorizedError } from "../../common/errors/not-authorized-error";
+import UserService from "../services/user.service";
+import AuthService from "../services/auth.service";
 
 const user_query: IResolvers = {
   Query: {
     // Get users
     async users(_, __) {
-      try {
-        return customResponse(true, "Users list", { users: await User.find() });
-      } catch (error) {
-        throw new InternalServerError("Couldn't get the data");
-      }
+      return await UserService.getUsers();
+    },
+
+    // Get user
+    async user(_, userInput) {
+      return await UserService.getUser(userInput);
     },
 
     //Login
-    async login(_, { email, password }, { req }) {
-      // Check if the user exists with that email and remove registerDate from query and User document result
-      const existingUser = await User.findOne({ email }).select(
-        "-registerDate -birthday"
-      );
-      if (!existingUser) {
-        throw new BadRequestError("Invalid credentials");
-      }
-
-      // Check if the user's password do matches
-      const passwordsMatch = await existingUser.comparePassword(password);
-      if (!passwordsMatch) {
-        throw new BadRequestError("Invalid credentials");
-      }
-
-      // Generate Token - JWT
-      const token = await JWT.sign({ user: existingUser });
-      // Store it on session object
-      req.session = {
-        jwt: token,
-      };
-
-      return customResponse(true, "User logged", { token, user: existingUser });
+    async login(_, args, { req }) {
+      return await AuthService.login(args, { req });
     },
 
     //Singout
     async logout(_, __, { req }) {
-      if (!req.session.jwt) throw new BadRequestError("Unable to logout");
-      req.session = null;
-
-      return { status: true, message: "logout" };
+      return await AuthService.logout({ req });
     },
 
     //Renew token
-    async renewToken(_, __, { req, currentUser }) {
-      if (!currentUser) throw new NotAuthorizedError();
-
-      // Generate Token - JWT
-      const token = await JWT.sign({ user: currentUser });
-      // Store it on session object
-      req.session = {
-        jwt: token,
-      };
-
-      return customResponse(true, "New token was generated", {
-        token,
-        user: currentUser,
-      });
+    async renewToken(_, __, context) {
+      return await AuthService.renewToken(context);
     },
 
-    // me
+    // Me
     async me(_, __, { currentUser }) {
-      if (!currentUser) throw new NotAuthorizedError();
-      return customResponse(true, "Authenticated user", { user: currentUser });
+      return AuthService.me({ currentUser });
     },
   },
 };

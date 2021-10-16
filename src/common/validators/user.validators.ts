@@ -1,6 +1,8 @@
 import Joi from "joi";
 import { UserRoles } from "../../models/types/user-roles";
 
+import ObjectId from "mongoose";
+
 /* 
 Good example of name properity
 
@@ -15,20 +17,45 @@ const name = Joi.string()
   
   */
 
-const name = Joi.string().min(3).max(38).required();
-const lastname = Joi.string().min(3).max(38).required();
-const email = Joi.string().email().required();
-const password = Joi.string().alphanum().min(3).max(38).required();
+const _id = Joi.string().custom((value, helper) => {
+  if (!ObjectId.isValidObjectId(value)) {
+    return helper.message({ custom: "_id must be Object Id" });
+  }
+  return value;
+});
+//  const _id = Joi.string();
+const name = Joi.string().min(3).max(38);
+const lastname = Joi.string().min(3).max(38);
+const email = Joi.string().email();
+const password = Joi.string().alphanum().min(3).max(38);
 const birthday = Joi.string();
 const role = Joi.string()
   .valid(...Object.values(UserRoles))
   .messages({ "any.only": "Must be a valid role" });
 
 export const userCreateValidation = Joi.object().keys({
+  name: name.required(),
+  lastname: lastname.required(),
+  email: email.required(),
+  password: password.required(),
+  birthday,
+  role,
+});
+
+export const userUpdateValidation = Joi.object().keys({
+  _id: _id.required(),
   name,
   lastname,
   email,
   password,
   birthday,
   role,
+});
+
+export const userDeleteValidation = Joi.object().keys({
+  _id: _id.required(),
+});
+
+export const userGetByIdValidation = Joi.object().keys({
+  _id: _id.required(),
 });
