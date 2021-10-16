@@ -6,7 +6,6 @@ const user_mutation: IResolvers = {
   Mutation: {
     // User register
     async register(_, { userInput }) {
-      console.log("tatatata", userInput);
       return await UserService.register(userInput);
     },
     // Update user
