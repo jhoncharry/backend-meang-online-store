@@ -13,6 +13,8 @@ import {
 } from "../../common/validators/genre.validators";
 
 import slugify from "slugify";
+import { pagination } from "../../helpers/pagination";
+import { User } from "../../models/user.model";
 
 class GenreService {
   static async addGenre(genreInput: any) {
@@ -107,13 +109,32 @@ class GenreService {
       });
   }
 
-  static async getGenres() {
+  static async getGenres(paginationOptions: any) {
+    const page = paginationOptions.page || 1;
+    const itemsPage = paginationOptions.itemsPage || 20;
+
     try {
+      const paginationData = await pagination(page, itemsPage, Genre);
+      if (page > paginationData.pages) {
+        throw new BadRequestError("No data result");
+      }
+
       return customResponse(true, "Genres list", {
-        genres: await Genre.find(),
+        genres: await Genre.find()
+          .skip(paginationData.skip)
+          .limit(paginationData.itemsPage)
+          .exec(),
+
+        info: {
+          page: paginationData.page,
+          pages: paginationData.pages,
+          itemsPage: paginationData.itemsPage,
+          total: paginationData.total,
+        },
       });
     } catch (error) {
-      throw new InternalServerError("Couldn't get the data");
+      if (error instanceof BadRequestError) return error;
+      throw new InternalServerError("Something went wrong...");
     }
   }
 

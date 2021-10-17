@@ -1,0 +1,10 @@
+type ResultInfo {
+  "Selected page"
+  page: Int!
+  "Total numbers of documents in these collections"
+  total: Int!
+  "Number of documents per page"
+  itemsPage: Int!
+  "Pages containing the result"
+  pages: Int!
+}

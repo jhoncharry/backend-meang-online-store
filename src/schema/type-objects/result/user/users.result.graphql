@@ -5,4 +5,6 @@ type ResultUsers implements Result {
   message: String!
   "Database user registration list (Clients / Admins)"
   users: [User!]!
+  "Info result (optinal)"
+  info: ResultInfo
 }

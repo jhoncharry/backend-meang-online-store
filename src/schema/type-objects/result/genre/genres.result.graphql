@@ -5,4 +5,6 @@ type ResultGenres implements Result {
   message: String!
   "genres information"
   genres: [Genre!]!
+  "Info result (optinal)"
+  info: ResultInfo
 }

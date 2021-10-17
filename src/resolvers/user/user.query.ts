@@ -6,8 +6,8 @@ import AuthService from "../services/auth.service";
 const user_query: IResolvers = {
   Query: {
     // Get users
-    async users(_, __) {
-      return await UserService.getUsers();
+    async users(_, paginationOptions) {
+      return await UserService.getUsers(paginationOptions);
     },
 
     // Get user

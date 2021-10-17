@@ -12,6 +12,7 @@ import { InternalServerError } from "../../common/errors/internal-server-error";
 
 import { validationInputs } from "../../common/validators/index.validation";
 import { customResponse } from "../../common/response/custom-response";
+import { pagination } from "../../helpers/pagination";
 
 class UserService {
   static async register(userInput: any) {
@@ -83,11 +84,32 @@ class UserService {
       });
   }
 
-  static async getUsers() {
+  static async getUsers(paginationOptions: any) {
+    const page = paginationOptions.page || 1;
+    const itemsPage = paginationOptions.itemsPage || 20;
+
     try {
-      return customResponse(true, "Users list", { users: await User.find() });
+      const paginationData = await pagination(page, itemsPage, User);
+      if (page > paginationData.pages) {
+        throw new BadRequestError("No data result");
+      }
+
+      return customResponse(true, "User list", {
+        users: await User.find()
+          .skip(paginationData.skip)
+          .limit(paginationData.itemsPage)
+          .exec(),
+
+        info: {
+          page: paginationData.page,
+          pages: paginationData.pages,
+          itemsPage: paginationData.itemsPage,
+          total: paginationData.total,
+        },
+      });
     } catch (error) {
-      throw new InternalServerError("Couldn't get the data");
+      if (error instanceof BadRequestError) return error;
+      throw new InternalServerError("Something went wrong...");
     }
   }
 
