@@ -35,6 +35,40 @@ class AuthService {
     return customResponse(true, "User logged", { user: existingUser });
   }
 
+  static async loginRestricted(args: any, context: any) {
+    const { email, password } = args;
+    const { req } = context;
+
+    // Check if the user exists with that email and remove registerDate from query and User document result
+    const existingUser = await User.findOne({ email }).select(
+      "-registerDate -birthday"
+    );
+
+    if (!existingUser) {
+      throw new BadRequestError("Invalid credentials");
+    }
+
+    // FIXME Check if we need contains for a simple string o includes when using Array of string
+    if (!existingUser.role.includes("ADMIN")) {
+      throw new BadRequestError("You can't access this page");
+    }
+
+    // Check if the user's password do matches
+    const passwordsMatch = await existingUser.comparePassword(password);
+    if (!passwordsMatch) {
+      throw new BadRequestError("Invalid credentials");
+    }
+
+    // Generate Token - JWT
+    const token = await JWT.sign({ user: existingUser });
+    // Store it on session object
+    req.session = {
+      jwt: token,
+    };
+
+    return customResponse(true, "User logged", { user: existingUser });
+  }
+
   static async logout(context: any) {
     const { req } = context;
 

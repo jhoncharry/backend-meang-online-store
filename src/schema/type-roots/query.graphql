@@ -2,6 +2,8 @@
 type Query {
   "User login"
   login(email: String!, password: String!): ResultLogin
+  "User login"
+  loginRestricted(email: String!, password: String!): ResultLogin
   "Logout"
   logout: ResultLogout
   "Renew token"

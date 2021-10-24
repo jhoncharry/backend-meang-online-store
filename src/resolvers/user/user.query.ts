@@ -20,6 +20,11 @@ const user_query: IResolvers = {
       return await AuthService.login(args, { req });
     },
 
+    //Login Restricted
+    async loginRestricted(_, args, { req }) {
+      return await AuthService.loginRestricted(args, { req });
+    },
+
     //Singout
     async logout(_, __, { req }) {
       return await AuthService.logout({ req });
