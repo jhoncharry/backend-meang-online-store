@@ -31,5 +31,5 @@ input UserUpdateInput {
   "user's birthday - over 18 years old only"
   birthday: String
   "user permissions"
-  role: Role = CLIENT
+  role: Role
 }

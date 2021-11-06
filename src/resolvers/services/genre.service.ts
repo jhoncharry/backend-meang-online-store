@@ -47,8 +47,8 @@ class GenreService {
     return await genre
       .save()
       .then((genre) => customResponse(true, "Genre created", { genre }))
-      .catch((eee) => {
-        console.log("the error", eee);
+      .catch((error) => {
+        console.log("The error", error);
         throw new InternalServerError("Couldn't save the data");
       });
   }
@@ -109,6 +109,29 @@ class GenreService {
       });
   }
 
+  static async blockGenre(genreInput: any) {
+    // genre update validation
+    let value = await validationInputs(genreGetByIdValidation, genreInput);
+
+    // Check if the genre id already exists
+    const genreCheck = await Genre.findOne({ id: value.id });
+    if (!genreCheck) {
+      throw new BadRequestError("This genre id doesn't exists");
+    }
+
+    genreCheck.set({ active: false });
+
+    // Save genre
+    return await genreCheck
+      .save()
+      .then((genre) => {
+        return customResponse(true, "Genre block", { genre });
+      })
+      .catch(() => {
+        throw new InternalServerError("Couldn't block the genre");
+      });
+  }
+
   static async getGenres(paginationOptions: any) {
     const page = paginationOptions.page || 1;
     const itemsPage = paginationOptions.itemsPage || 20;
@@ -120,7 +143,7 @@ class GenreService {
       }
 
       return customResponse(true, "Genres list", {
-        genres: await Genre.find()
+        genres: await Genre.find({ active: { $ne: false } })
           .skip(paginationData.skip)
           .limit(paginationData.itemsPage)
           .exec(),

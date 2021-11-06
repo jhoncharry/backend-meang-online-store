@@ -14,6 +14,9 @@ const genre_mutation: IResolvers = {
     async deleteGenre(_, genreInput) {
       return await GenreService.deleteGenre(genreInput);
     },
+    async blockGenre(_, genreInput) {
+      return await GenreService.blockGenre(genreInput);
+    },
   },
 };
 

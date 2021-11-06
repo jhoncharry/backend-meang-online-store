@@ -6,4 +6,6 @@ type Genre implements Item {
   name: String!
   "Genre's slug"
   slug: String!
+  "Genre's active"
+  active: Boolean
 }

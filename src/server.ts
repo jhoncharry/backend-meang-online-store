@@ -19,10 +19,6 @@ import schema from "./schema";
 import { Database } from "./config/database";
 import contextModel from "./helpers/context-project";
 
-
-// TODO REFACTORIZAR UN POCO EL BACKEND
-
-
 // Start function
 async function init() {
   const app = express();

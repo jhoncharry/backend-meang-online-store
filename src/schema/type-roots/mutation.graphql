@@ -11,4 +11,6 @@ type Mutation {
   updateGenre(id: ID!, name: String!): ResultGenre
   "Delete Genre"
   deleteGenre(id: ID!): ResultGenre
+  "Block Genre"
+  blockGenre(id: ID!): ResultGenre
 }

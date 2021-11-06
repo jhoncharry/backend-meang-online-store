@@ -8,7 +8,7 @@ export async function pagination(
   if (itemsPage < 1 || itemsPage > 20) itemsPage = 20;
   if (page < 1) page = 1;
 
-  const total = await model.countDocuments();
+  const total = await model.countDocuments({ active: { $ne: false } });
   const pages = Math.ceil(total / itemsPage);
 
   return {

@@ -28,6 +28,9 @@ const genreSchema = new Schema({
     required: [true, "Email is required"],
     unique: true,
   },
+  active: {
+    type: Boolean,
+  },
 });
 
 const Genre = model<GenreDoc, GenreModel>("Genre", genreSchema);
