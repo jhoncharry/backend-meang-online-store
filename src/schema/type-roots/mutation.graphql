@@ -3,8 +3,11 @@ type Mutation {
   register(userInput: UserCreateInput!): ResultUser
   "User Update"
   updateUser(userInput: UserUpdateInput!): ResultUser
-  "Use delete"  
+  "Use delete"
   deleteUser(_id: ID!): ResultUser
+  "Block User"
+  blockUser(_id: ID!, unblock: Boolean!): ResultUser
+
   "Add Genre"
   addGenre(name: String!): ResultGenre
   "Update Genre"
@@ -13,4 +16,23 @@ type Mutation {
   deleteGenre(id: ID!): ResultGenre
   "Block Genre"
   blockGenre(id: ID!): ResultGenre
+
+  "Send test email"
+  sendEmail(mail: MailInput!): ResultMail
+  "Activate user by email"
+  sendUserActivateEmail(email: String!): ResultMail
+  "Verify user activate email"
+  verifyUserActivateEmail: ResultMail
+
+  # "Sending email"
+  # sendEmail(mail: MailInput!): ResultMail
+  # "User email activation"
+  # userEmailActive(_id: ID!, email: String!): ResultMail
+  # "active user action"
+  # activateUserAction(_id: ID!, birthday: String!, password: String!): ResultMail
+
+  "Reset user password by email"
+  sendUserResetPasswordEmail(email: String!): ResultMail
+  "Verify user reset password email"
+  verifyUserResetPasswordEmail(password: String!): ResultMail
 }

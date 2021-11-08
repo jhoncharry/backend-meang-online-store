@@ -24,6 +24,7 @@ interface UserDoc extends Document {
   registerDate: string;
   birthday: string;
   role: UserRoles;
+  active: boolean;
   comparePassword(password: string): Promise<Boolean>;
 }
 
@@ -71,6 +72,9 @@ const userSchema = new Schema(
       enum: validRoles,
       default: "CLIENT",
       required: [true, "Role is required"],
+    },
+    active: {
+      type: Boolean,
     },
   },
   {

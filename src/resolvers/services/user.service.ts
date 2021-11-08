@@ -1,6 +1,8 @@
 import { User } from "../../models/user.model";
 
 import {
+  userBlockValidation,
+  userChangePasswordValidation,
   userCreateValidation,
   userDeleteValidation,
   userGetByIdValidation,
@@ -13,6 +15,7 @@ import { InternalServerError } from "../../common/errors/internal-server-error";
 import { validationInputs } from "../../common/validators/index.validation";
 import { customResponse } from "../../common/response/custom-response";
 import { pagination } from "../../helpers/pagination";
+import EmailService from "./email.service";
 
 class UserService {
   static async register(userInput: any) {
@@ -28,17 +31,19 @@ class UserService {
       throw new BadRequestError("This user already exists");
     }
 
+    // Added inactive user field
+    value.active = false;
+
     const user = new User(value);
 
     // Save User
-    return await user
-      .save()
-      .then((userSaved) =>
-        customResponse(true, "User created", { user: userSaved })
-      )
-      .catch(() => {
-        throw new InternalServerError("Couldn't save the data");
-      });
+    const userSaved = await user.save();
+    if (!userSaved) {
+      throw new InternalServerError("Couldn't save the data");
+    }
+
+    await EmailService.sendUserActivateEmail(userSaved.email);
+    return customResponse(true, "User created", { user: userSaved });
   }
 
   static async updateUser(userInput: any) {
@@ -84,6 +89,33 @@ class UserService {
       });
   }
 
+  static async unblockUser(userInput: any) {
+    console.log("datos", userInput);
+
+    // user update validation
+    let value = await validationInputs(userBlockValidation, userInput);
+
+    // Check if the user id already exists
+    const userCheck = await User.findById(value._id);
+    if (!userCheck) {
+      throw new BadRequestError("This user id doesn't exists");
+    }
+
+    userCheck.set({ active: value.unblock });
+
+    const action = value.unblock ? "Unblocked" : "Blocked";
+
+    // Save genre
+    return await userCheck
+      .save()
+      .then((user) => {
+        return customResponse(true, `User ${action}`, { user });
+      })
+      .catch(() => {
+        throw new InternalServerError("Couldn't block the user");
+      });
+  }
+
   static async getUsers(paginationOptions: any) {
     const page = paginationOptions.page || 1;
     const itemsPage = paginationOptions.itemsPage || 20;
@@ -95,7 +127,7 @@ class UserService {
       }
 
       return customResponse(true, "User list", {
-        users: await User.find()
+        users: await User.find({ active: { $ne: false } })
           .skip(paginationData.skip)
           .limit(paginationData.itemsPage)
           .exec(),
@@ -125,6 +157,30 @@ class UserService {
     return customResponse(true, "User by ID", {
       user: existingUser,
     });
+  }
+
+  static async changePassword(userInput: any) {
+    // user update  validation
+    let value = await validationInputs(userChangePasswordValidation, userInput);
+
+    // Check if the user already exists
+    const userCheck = await User.findById(value._id);
+    if (!userCheck) {
+      throw new BadRequestError("This user doesn't exists");
+    }
+
+    userCheck.set(value);
+    // Save User
+    return await userCheck
+      .save()
+      .then((userUpdated) =>
+        customResponse(true, "Change user password Successfully", {
+          user: userUpdated,
+        })
+      )
+      .catch(() => {
+        throw new InternalServerError("Couldn't save the data");
+      });
   }
 }
 

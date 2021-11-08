@@ -30,7 +30,11 @@ class GenreService {
 
     // Set autoincrement Id
     let id;
-    const lastElement = await Genre.find().limit(1).sort({ id: -1 });
+    const lastElement = await Genre.find()
+      .limit(1)
+      .sort({ id: -1 })
+      .collation({ locale: "en_US", numericOrdering: true });
+
     lastElement.length === 0
       ? (id = "1")
       : (id = String(+lastElement[0].id + 1));

@@ -33,6 +33,8 @@ const role = Joi.string()
   .valid(...Object.values(UserRoles))
   .messages({ "any.only": "Must be a valid role" });
 
+const unblock = Joi.boolean();
+
 export const userCreateValidation = Joi.object().keys({
   name: name.required(),
   lastname: lastname.required(),
@@ -58,4 +60,14 @@ export const userDeleteValidation = Joi.object().keys({
 
 export const userGetByIdValidation = Joi.object().keys({
   _id: _id.required(),
+});
+
+export const userBlockValidation = Joi.object().keys({
+  _id: _id.required(),
+  unblock: unblock.required(),
+});
+
+export const userChangePasswordValidation = Joi.object().keys({
+  _id: _id.required(),
+  password: password.required(),
 });

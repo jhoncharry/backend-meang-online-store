@@ -12,8 +12,13 @@ const user_mutation: IResolvers = {
     async updateUser(_, { userInput }) {
       return await UserService.updateUser(userInput);
     },
+    // Delete user
     async deleteUser(_, userInput) {
       return await UserService.deleteUser(userInput);
+    },
+    // Block user
+    async blockUser(_, userInput) {
+      return await UserService.unblockUser(userInput);
     },
   },
 };
