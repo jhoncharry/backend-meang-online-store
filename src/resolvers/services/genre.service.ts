@@ -9,12 +9,14 @@ import {
   genreCreateValidation,
   genreDeleteValidation,
   genreGetByIdValidation,
+  genreUnblockValidation,
   genreUpdateValidation,
 } from "../../common/validators/genre.validators";
 
 import slugify from "slugify";
 import { pagination } from "../../helpers/pagination";
 import { User } from "../../models/user.model";
+import { ActiveValues } from "../../models/types/user-active";
 
 class GenreService {
   static async addGenre(genreInput: any) {
@@ -113,9 +115,9 @@ class GenreService {
       });
   }
 
-  static async blockGenre(genreInput: any) {
+  static async unblockGenre(genreInput: any) {
     // genre update validation
-    let value = await validationInputs(genreGetByIdValidation, genreInput);
+    let value = await validationInputs(genreUnblockValidation, genreInput);
 
     // Check if the genre id already exists
     const genreCheck = await Genre.findOne({ id: value.id });
@@ -123,13 +125,15 @@ class GenreService {
       throw new BadRequestError("This genre id doesn't exists");
     }
 
-    genreCheck.set({ active: false });
+    genreCheck.set({ active: value.unblock });
+
+    const action = value.unblock ? "Unblocked" : "Blocked";
 
     // Save genre
     return await genreCheck
       .save()
       .then((genre) => {
-        return customResponse(true, "Genre block", { genre });
+        return customResponse(true, `Genre ${action}`, { genre });
       })
       .catch(() => {
         throw new InternalServerError("Couldn't block the genre");
@@ -139,15 +143,30 @@ class GenreService {
   static async getGenres(paginationOptions: any) {
     const page = paginationOptions.page || 1;
     const itemsPage = paginationOptions.itemsPage || 20;
+    const active = paginationOptions.active || ActiveValues.ACTIVE;
+
+    let activeFilter = {};
+
+    if (active === ActiveValues.ACTIVE) {
+      activeFilter = { active: { $ne: false } };
+    }
+    if (active === ActiveValues.INACTIVE) {
+      activeFilter = { active: false };
+    }
 
     try {
-      const paginationData = await pagination(page, itemsPage, Genre);
+      const paginationData = await pagination(
+        page,
+        itemsPage,
+        Genre,
+        activeFilter
+      );
       if (page > paginationData.pages) {
         throw new BadRequestError("No data result");
       }
 
       return customResponse(true, "Genres list", {
-        genres: await Genre.find({ active: { $ne: false } })
+        genres: await Genre.find(activeFilter)
           .skip(paginationData.skip)
           .limit(paginationData.itemsPage)
           .exec(),

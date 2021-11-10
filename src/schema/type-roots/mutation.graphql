@@ -6,7 +6,7 @@ type Mutation {
   "Use delete"
   deleteUser(_id: ID!): ResultUser
   "Block User"
-  blockUser(_id: ID!, unblock: Boolean!): ResultUser
+  unblockUser(_id: ID!, unblock: Boolean!): ResultUser
 
   "Add Genre"
   addGenre(name: String!): ResultGenre
@@ -15,7 +15,7 @@ type Mutation {
   "Delete Genre"
   deleteGenre(id: ID!): ResultGenre
   "Block Genre"
-  blockGenre(id: ID!): ResultGenre
+  unblockGenre(id: ID!, unblock: Boolean!): ResultGenre
 
   "Send test email"
   sendEmail(mail: MailInput!): ResultMail

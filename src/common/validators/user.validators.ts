@@ -62,7 +62,7 @@ export const userGetByIdValidation = Joi.object().keys({
   _id: _id.required(),
 });
 
-export const userBlockValidation = Joi.object().keys({
+export const userUnblockValidation = Joi.object().keys({
   _id: _id.required(),
   unblock: unblock.required(),
 });

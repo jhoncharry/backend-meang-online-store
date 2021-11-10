@@ -17,7 +17,7 @@ const user_mutation: IResolvers = {
       return await UserService.deleteUser(userInput);
     },
     // Block user
-    async blockUser(_, userInput) {
+    async unblockUser(_, userInput) {
       return await UserService.unblockUser(userInput);
     },
   },

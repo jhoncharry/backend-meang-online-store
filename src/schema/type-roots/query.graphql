@@ -10,12 +10,22 @@ type Query {
   renewToken: ResultUserToken
   "Authentication by token"
   me: ResultUserToken
+
   "Database users registration list (Clients / Admins)"
-  users(page: Int, itemsPage: Int): ResultUsers
+  users(
+    page: Int
+    itemsPage: Int
+    active: ActiveFilterEnum = ACTIVE
+  ): ResultUsers
   "Get user by id"
   user(_id: ID!): ResultUser
+
   "Get genres"
-  genres(page: Int, itemsPage: Int): ResultGenres
+  genres(
+    page: Int
+    itemsPage: Int
+    active: ActiveFilterEnum = ACTIVE
+  ): ResultGenres
   "Get genre by ID"
   genre(id: ID!): ResultGenre
 }

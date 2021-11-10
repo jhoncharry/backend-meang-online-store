@@ -25,6 +25,11 @@ class AuthService {
       throw new BadRequestError("Invalid credentials");
     }
 
+    // Check if the user is activated
+    if (existingUser.active !== true) {
+      throw new BadRequestError("This user hasn't been activated");
+    }
+
     // Generate Token - JWT
     const token = await JWT.sign({ user: existingUser });
     // Store it on session object
@@ -46,6 +51,11 @@ class AuthService {
 
     if (!existingUser) {
       throw new BadRequestError("Invalid credentials");
+    }
+
+    // Check if the user is activated
+    if (existingUser.active !== true) {
+      throw new BadRequestError("This user hasn't been activated");
     }
 
     // FIXME Check if we need contains for a simple string o includes when using Array of string

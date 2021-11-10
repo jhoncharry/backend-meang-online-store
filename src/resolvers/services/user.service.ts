@@ -1,11 +1,11 @@
 import { User } from "../../models/user.model";
 
 import {
-  userBlockValidation,
   userChangePasswordValidation,
   userCreateValidation,
   userDeleteValidation,
   userGetByIdValidation,
+  userUnblockValidation,
   userUpdateValidation,
 } from "../../common/validators/user.validators";
 
@@ -16,6 +16,7 @@ import { validationInputs } from "../../common/validators/index.validation";
 import { customResponse } from "../../common/response/custom-response";
 import { pagination } from "../../helpers/pagination";
 import EmailService from "./email.service";
+import { ActiveValues } from "../../models/types/user-active";
 
 class UserService {
   static async register(userInput: any) {
@@ -90,10 +91,8 @@ class UserService {
   }
 
   static async unblockUser(userInput: any) {
-    console.log("datos", userInput);
-
     // user update validation
-    let value = await validationInputs(userBlockValidation, userInput);
+    let value = await validationInputs(userUnblockValidation, userInput);
 
     // Check if the user id already exists
     const userCheck = await User.findById(value._id);
@@ -119,15 +118,30 @@ class UserService {
   static async getUsers(paginationOptions: any) {
     const page = paginationOptions.page || 1;
     const itemsPage = paginationOptions.itemsPage || 20;
+    const active = paginationOptions.active || ActiveValues.ACTIVE;
+
+    let activeFilter = {};
+
+    if (active === ActiveValues.ACTIVE) {
+      activeFilter = { active: { $ne: false } };
+    }
+    if (active === ActiveValues.INACTIVE) {
+      activeFilter = { active: false };
+    }
 
     try {
-      const paginationData = await pagination(page, itemsPage, User);
+      const paginationData = await pagination(
+        page,
+        itemsPage,
+        User,
+        activeFilter
+      );
       if (page > paginationData.pages) {
         throw new BadRequestError("No data result");
       }
 
       return customResponse(true, "User list", {
-        users: await User.find({ active: { $ne: false } })
+        users: await User.find(activeFilter)
           .skip(paginationData.skip)
           .limit(paginationData.itemsPage)
           .exec(),

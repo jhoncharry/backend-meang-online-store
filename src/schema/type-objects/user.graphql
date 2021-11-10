@@ -19,6 +19,8 @@ type User {
   birthday: String!
   "user permissions"
   role: Role!
+  "user's active"
+  active: Boolean
 }
 """
 Detailed user information by token
