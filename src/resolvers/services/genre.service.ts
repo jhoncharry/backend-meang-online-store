@@ -45,6 +45,7 @@ class GenreService {
       id,
       name: value.name,
       slug,
+      active: false,
     };
 
     const genre = new Genre(newGenre);
