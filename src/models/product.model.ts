@@ -2,18 +2,19 @@ import { Schema, model, Model } from "mongoose";
 
 // An interface that describes the properties
 // that a Genre Document has
-interface GenreDoc extends Document {
+interface ProductDoc extends Document {
   id: string;
   name: string;
   slug: string;
-  active: boolean;
+  released: string;
+  img: string;
 }
 
 // An interface that describes the properties
 // that a Genre Model has
-interface GenreModel extends Model<GenreDoc> {}
+interface ProductModel extends Model<ProductDoc> {}
 
-const genreSchema = new Schema({
+const productSchema = new Schema({
   id: {
     type: String,
     required: [true, "Name is required"],
@@ -29,10 +30,24 @@ const genreSchema = new Schema({
     required: [true, "Email is required"],
     unique: true,
   },
-  active: {
-    type: Boolean,
+  released: {
+    type: String,
+    required: [true, "Email is required"],
+  },
+  img: {
+    type: String,
+    required: [true, "Email is required"],
+  },
+  clip: {
+    type: Object,
+  },
+  rating: {
+    type: Object,
+  },
+  shortScreenshots: {
+    type: Object,
   },
 });
 
-const Genre = model<GenreDoc, GenreModel>("Genre", genreSchema);
-export { Genre };
+const Product = model<ProductDoc, ProductModel>("Product", productSchema);
+export { Product };

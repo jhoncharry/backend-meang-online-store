@@ -1,0 +1,7 @@
+"Type of object for saving save store product (platform) information about games"
+type Platform {
+  id: ID!
+  name: String!
+  slug: String!
+  active: Boolean!
+}

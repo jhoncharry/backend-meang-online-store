@@ -1,0 +1,10 @@
+type Mutation {
+  "Add Genre"
+  addGenre(name: String!): ResultGenre
+  "Update Genre"
+  updateGenre(id: ID!, name: String!): ResultGenre
+  "Delete Genre"
+  deleteGenre(id: ID!): ResultGenre
+  "Block Genre"
+  unblockGenre(id: ID!, unblock: Boolean!): ResultGenre
+}

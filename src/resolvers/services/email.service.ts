@@ -89,7 +89,6 @@ class EmailService {
   }
 
   static async sendUserResetPasswordEmail(email: string) {
-    console.log("Email", email);
     const checkUser = await User.findOne({ email });
 
     if (!checkUser) {

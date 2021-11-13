@@ -1,0 +1,29 @@
+type Query {
+  "Get store product"
+  storeProducts(
+    page: Int
+    itemsPage: Int
+    active: ActiveFilterEnum = ACTIVE
+  ): ResultStoreProducts
+
+  "Get store product"
+  storeProductsByPlatforms(
+    page: Int
+    itemsPage: Int
+    active: ActiveFilterEnum = ACTIVE
+    platform: ID!
+    random: Boolean = false
+  ): ResultStoreProducts
+
+  "Get store product"
+  storeProductsOffersLast(
+    page: Int
+    itemsPage: Int
+    active: ActiveFilterEnum = ACTIVE
+    "Top price"
+    topPrice: Float = -1
+    "Last units"
+    lastUnits: Int = -1
+    random: Boolean = false
+  ): ResultStoreProducts
+}

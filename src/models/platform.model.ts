@@ -2,7 +2,7 @@ import { Schema, model, Model } from "mongoose";
 
 // An interface that describes the properties
 // that a Genre Document has
-interface GenreDoc extends Document {
+interface PlatformDoc extends Document {
   id: string;
   name: string;
   slug: string;
@@ -11,9 +11,9 @@ interface GenreDoc extends Document {
 
 // An interface that describes the properties
 // that a Genre Model has
-interface GenreModel extends Model<GenreDoc> {}
+interface PlatformModel extends Model<PlatformDoc> {}
 
-const genreSchema = new Schema({
+const platformSchema = new Schema({
   id: {
     type: String,
     required: [true, "Name is required"],
@@ -34,5 +34,5 @@ const genreSchema = new Schema({
   },
 });
 
-const Genre = model<GenreDoc, GenreModel>("Genre", genreSchema);
-export { Genre };
+const Platform = model<PlatformDoc, PlatformModel>("Platform", platformSchema);
+export { Platform };
