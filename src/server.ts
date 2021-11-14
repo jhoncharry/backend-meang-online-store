@@ -50,7 +50,7 @@ async function init() {
   await server.start();
   server.applyMiddleware({
     app,
-    cors: { origin: "http://localhost:4200", credentials: true },
+    cors: { origin: ["http://localhost:4200", "http://localhost:4500"], credentials: true },
   });
 
   app.get(

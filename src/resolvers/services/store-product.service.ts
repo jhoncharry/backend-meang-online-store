@@ -7,7 +7,10 @@ import { customResponse } from "../../common/response/custom-response";
 import { pagination } from "../../helpers/pagination";
 import { ActiveValues } from "../../models/types/user-active";
 import { StoreProduct } from "../../models/store-product.model";
-import { platformGetByIdValidation } from "../../common/validators/platform.validators";
+import {
+  platformGetByIdValidation,
+  platformGetByMultipleIdsValidation,
+} from "../../common/validators/platform.validators";
 
 class StoreProductService {
   static async getStoreProducts(paginationOptions: any) {
@@ -76,11 +79,14 @@ class StoreProductService {
     }
 
     // platform  id validation
-    let value = await validationInputs(platformGetByIdValidation, {
+    let value = await validationInputs(platformGetByMultipleIdsValidation, {
       id: platformId,
     });
 
-    filter = { ...filter, ...{ platform_id: `${value.id}` } };
+    const ids = value.id;
+    const platforms = ids.map(String);
+
+    filter = { ...filter, ...{ platform_id: { $in: platforms } } };
 
     try {
       if (!random) {
