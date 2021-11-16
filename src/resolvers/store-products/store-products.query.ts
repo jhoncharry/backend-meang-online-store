@@ -23,6 +23,13 @@ const store_product_query: IResolvers = {
       );
     },
 
+    // Get store products
+    async storeProductDetails(_, storeProductsPlatformsInput) {
+      return await StoreProductService.storeProductDetails(
+        storeProductsPlatformsInput
+      );
+    },
+
     // Get genre by id
     /*     async genre(_, genreInput) {
       return await GenreService.getGenre(genreInput);

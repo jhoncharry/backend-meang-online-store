@@ -1,8 +1,10 @@
-type ResultStoreProduct implements Result {
+type ResultStoreProducts implements Result {
   "Operation status"
   status: Boolean!
   "Operation message to provide feedback"
   message: String!
   "Store Product information"
-  storeProduct: StoreProduct
+  storeProduct: [StoreProduct!]!
+  "Information result (optinal)"
+  info: ResultInfo
 }

@@ -8,4 +8,5 @@ type StoreProduct {
   active: Boolean
   price: Float!
   stock: Int!
+  relationalProducts: [StoreProduct]
 }

@@ -11,6 +11,7 @@ import {
   platformGetByIdValidation,
   platformGetByMultipleIdsValidation,
 } from "../../common/validators/platform.validators";
+import { storeProductGetByIdValidation } from "../../common/validators/storeProduct.validators";
 
 class StoreProductService {
   static async getStoreProducts(paginationOptions: any) {
@@ -219,6 +220,35 @@ class StoreProductService {
       if (error instanceof BadRequestError) return error;
       throw new InternalServerError("Something went wrong...");
     }
+  }
+
+  static async storeProductDetails(storeProductsPlatformsInput: any) {
+    // genre update validation
+    let value = await validationInputs(
+      storeProductGetByIdValidation,
+      storeProductsPlatformsInput
+    );
+
+    // Check if the user exists with that email and remove registerDate from query and User document result
+    const existingStoreProduct = await StoreProduct.findOne({ id: value.id });
+    if (!existingStoreProduct) {
+      throw new BadRequestError("Genre Doesn't exist");
+    }
+    return customResponse(true, "Genre by ID", {
+      storeProduct: existingStoreProduct,
+    });
+  }
+
+  static async storeRelationalProducts(filter: any = {}) {
+    // Check if the user exists with that email and remove registerDate from query and User document result
+    const existingPlatforms = await StoreProduct.find(filter);
+    if (!existingPlatforms) {
+      throw new BadRequestError("Store Products Don't exist");
+    }
+
+    return customResponse(true, "Store Products by ID", {
+      platforms: existingPlatforms,
+    });
   }
 }
 

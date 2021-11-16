@@ -17,7 +17,7 @@ interface StoreProductModel extends Model<StoreProductDoc> {}
 
 const storeProductSchema = new Schema({
   id: {
-    type: String,
+    type: Number,
     required: [true, "Name is required"],
     unique: true,
   },
