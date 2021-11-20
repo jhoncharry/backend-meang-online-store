@@ -1,0 +1,6 @@
+type ResultStripeCards implements Result {
+  status: Boolean!
+  message: String!
+  hasMore: Boolean!
+  cards: [StripeCard]
+}

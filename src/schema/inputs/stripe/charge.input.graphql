@@ -1,0 +1,7 @@
+input ChargeInput {
+  token: String
+  amount: String!
+  description: String!
+  customer: ID!
+  currency: CurrencyEnum = EUR
+}

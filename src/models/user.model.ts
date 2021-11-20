@@ -25,6 +25,7 @@ interface UserDoc extends Document {
   birthday: string;
   role: UserRoles;
   active: boolean;
+  stripeCustomer: string;
   comparePassword(password: string): Promise<Boolean>;
 }
 
@@ -75,6 +76,9 @@ const userSchema = new Schema(
     },
     active: {
       type: Boolean,
+    },
+    stripeCustomer: {
+      type: String,
     },
   },
   {
