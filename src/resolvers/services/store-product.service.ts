@@ -250,6 +250,25 @@ class StoreProductService {
       platforms: existingPlatforms,
     });
   }
+
+  static async updateStock(updateList: any[]) {
+    try {
+      updateList.map(async (item: any) => {
+        await this.manageStockUpdate(
+          { id: +item.id },
+          { stock: item.increment }
+        );
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  private static async manageStockUpdate(filter: any, updateObject: any) {
+    return await StoreProduct.updateOne(filter, { $inc: updateObject });
+  }
 }
 
 export default StoreProductService;

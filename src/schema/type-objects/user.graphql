@@ -21,6 +21,8 @@ type User {
   role: Role!
   "user's active"
   active: Boolean
+  "Stripe client"
+  stripeCustomer: String
 }
 """
 Detailed user information by token
@@ -36,4 +38,6 @@ type UserToken {
   email: String!
   "user permissions"
   role: Role!
+  "Stripe client"
+  stripeCustomer: String
 }

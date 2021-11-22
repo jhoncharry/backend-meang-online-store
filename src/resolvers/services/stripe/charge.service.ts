@@ -66,6 +66,38 @@ class ChargeService extends StripeApi {
         throw new InternalServerError("Payment Couldn't been made");
       });
   }
+
+  async getChargesByCustomer(
+    customer: string,
+    limit: number = 5,
+    startingAfter: string = "",
+    endingBefore: string = ""
+  ) {
+    let pagination;
+
+    if (startingAfter !== "" && endingBefore === "") {
+      pagination = { starting_after: startingAfter };
+    } else if (startingAfter === "" && endingBefore !== "") {
+      pagination = { ending_before: endingBefore };
+    } else {
+      pagination = {};
+    }
+    
+    return await this.execute(STRIPE_OBJECTS.CHARGES, STRIPE_ACTIONS.LIST, {
+      limit,
+      customer,
+      ...pagination,
+    })
+      .then((result: { has_more: boolean; data: any }) => {
+        return customResponse(true, "Lista de charges cargada successfully", {
+          hasMore: result.has_more,
+          charges: result.data,
+        });
+      })
+      .catch(() => {
+        throw new InternalServerError("Couldn't get the charges list");
+      });
+  }
 }
 
 export default ChargeService;
