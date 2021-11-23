@@ -13,6 +13,9 @@ import {
 } from "../../common/validators/platform.validators";
 import { storeProductGetByIdValidation } from "../../common/validators/storeProduct.validators";
 
+import { PubSub } from "apollo-server-express";
+import { SUBSCRIPTIONS_EVENT } from "../../config/constants";
+
 class StoreProductService {
   static async getStoreProducts(paginationOptions: any) {
     const page = paginationOptions.page || 1;
@@ -251,13 +254,24 @@ class StoreProductService {
     });
   }
 
-  static async updateStock(updateList: any[]) {
+  static async updateStock(updateList: any[], pubsub: PubSub) {
     try {
       updateList.map(async (item: any) => {
+        const itemDetails = await StoreProduct.findOne({ id: +item.id });
+
+        if (item.increment < 0 && item.increment + itemDetails!.stock < 0) {
+          item.increment = -itemDetails!.stock;
+        }
+
         await this.manageStockUpdate(
           { id: +item.id },
           { stock: item.increment }
         );
+        itemDetails!.stock += item.increment;
+
+        pubsub.publish(SUBSCRIPTIONS_EVENT.UPDATE_STOCK_PRODUCT, {
+          selectProductStockUpdate: itemDetails,
+        });
       });
       return true;
     } catch (error) {

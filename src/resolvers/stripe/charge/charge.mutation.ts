@@ -6,8 +6,8 @@ const chargeService = new ChargeService();
 const charge_mutation: IResolvers = {
   Mutation: {
     // Create card token
-    async chargeOrder(_, { payment }) {
-      return chargeService.chargeOrder(payment);
+    async chargeOrder(_, { payment, stockChange }, { pubsub }) {
+      return chargeService.chargeOrder(payment, stockChange, pubsub);
     },
   },
 };

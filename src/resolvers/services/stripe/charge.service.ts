@@ -9,6 +9,9 @@ import StripeService from "./stripe.service";
 import { BadRequestError } from "../../../common/errors/bad-request-error";
 import CardService from "./card.service";
 
+import { PubSub } from "apollo-server-express";
+import StoreProductService from "../store-product.service";
+
 class ChargeService extends StripeApi {
   private stripeService = new StripeService();
   private cardService = new CardService();
@@ -17,7 +20,7 @@ class ChargeService extends StripeApi {
     return await this.stripeService.getCustomer(customer);
   }
 
-  async chargeOrder(payment: any) {
+  async chargeOrder(payment: any, stockChange: Array<any>, pubsub: PubSub) {
     // Check if customer exists
     const userData = await this.getClient(payment.customer);
 
@@ -57,6 +60,7 @@ class ChargeService extends StripeApi {
       payment
     )
       .then((result) => {
+        StoreProductService.updateStock(stockChange, pubsub);
         return customResponse(true, "The payment was successful", {
           charge: result,
         });
@@ -82,7 +86,7 @@ class ChargeService extends StripeApi {
     } else {
       pagination = {};
     }
-    
+
     return await this.execute(STRIPE_OBJECTS.CHARGES, STRIPE_ACTIONS.LIST, {
       limit,
       customer,

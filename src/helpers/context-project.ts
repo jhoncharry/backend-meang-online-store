@@ -1,5 +1,9 @@
+import { PubSub } from "apollo-server-express";
+
 import { User } from "../models/user.model";
 import { JWT } from "./jwt";
+
+const pubsub = new PubSub();
 
 const contextModel = async ({ req, connection }: any) => {
   const token = req ? req.session.jwt : connection.authorization;
@@ -7,6 +11,7 @@ const contextModel = async ({ req, connection }: any) => {
 
   return {
     req,
+    pubsub,
     currentUser: await getCurrentUser(currentUser),
   };
 };

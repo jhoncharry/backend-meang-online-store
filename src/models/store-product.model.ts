@@ -3,7 +3,7 @@ import { Schema, model, Model } from "mongoose";
 // An interface that describes the properties
 // that a Genre Document has
 interface StoreProductDoc extends Document {
-  id: string;
+  id: number;
   product_id: string;
   platform_id: string;
   active: boolean;

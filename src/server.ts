@@ -45,26 +45,33 @@ async function init() {
     schema,
     context: contextModel,
     introspection: true,
-    debug: false,
-  });
-  await server.start();
-  server.applyMiddleware({
-    app,
-    cors: { origin: ["http://localhost:4200", "http://localhost:4500"], credentials: true },
   });
 
-  app.get(
+  server.applyMiddleware({
+    app,
+    cors: {
+      origin: ["http://localhost:4200", "http://localhost:4500"],
+      credentials: true,
+    },
+  });
+
+  app.use(
     "/",
     expressPlayGround({
       endpoint: "/graphql",
     })
   );
 
-  const PORT = process.env.PORT;
   const httpServer = createServer(app);
+  server.installSubscriptionHandlers(httpServer);
+
+  const PORT = process.env.PORT;
   httpServer.listen(PORT, () => {
-    console.log("======================SERVER======================");
-    console.log(`http://localhost:${PORT} API MEANG - Online Store`);
+    console.log(`======================SERVER======================`);
+    console.log(`API GraphQL  http://localhost:${PORT}/${server.graphqlPath}`);
+    console.log(
+      `Subscription  API GraphQL  ws://localhost:${PORT}/${server.graphqlPath}`
+    );
   });
 }
 

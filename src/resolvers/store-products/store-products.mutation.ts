@@ -5,8 +5,8 @@ import StoreProductService from "../services/store-product.service";
 const store_product_mutation: IResolvers = {
   Mutation: {
     // Update stock
-    async updateStock(_, { update }) {
-      return await StoreProductService.updateStock(update);
+    async updateStock(_, { update }, { pubsub }) {
+      return await StoreProductService.updateStock(update, pubsub);
     },
 
     // Get genre by id
