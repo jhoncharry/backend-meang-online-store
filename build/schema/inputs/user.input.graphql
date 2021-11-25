@@ -1,0 +1,35 @@
+"Input to add user's data"
+input UserCreateInput {
+  "Id, but not required"
+  _id: ID
+  "user's name"
+  name: String!
+  "user's lastname"
+  lastname: String!
+  "user's email"
+  email: String!
+  "user's password"
+  password: String!
+  "user's birthday - over 18 years old only"
+  birthday: String!
+  "user permissions"
+  role: Role = CLIENT
+}
+
+"Input to add user's data"
+input UserUpdateInput {
+  "Id, but not required"
+  _id: ID!
+  "user's name"
+  name: String
+  "user's lastname"
+  lastname: String
+  "user's email"
+  email: String
+  "user's password"
+  password: String
+  "user's birthday - over 18 years old only"
+  birthday: String
+  "user permissions"
+  role: Role
+}

@@ -5,7 +5,7 @@
   "main": "build/server.js",
   "scripts": {
     "start": "node build/server.js",
-    "build": "tsc -p .",
+    "build": "tsc -p . && ncp src/schema build/schema",
     "start:dev": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true nodemon \"src/server.ts\" --exec \"ts-node\" \"src/server.ts\" -e ts,graphql,json",
     "start:staging": "cross-env NODE_ENV=staging nodemon \"src/server.ts\" --exec \"ts-node\" \"src/server.ts\" -e ts,graphql,json"
   },

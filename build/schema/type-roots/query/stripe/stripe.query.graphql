@@ -1,0 +1,12 @@
+"Definitions of root types"
+type Query {
+  "Get customers"
+  customers(
+    limit: Int = 5
+    startingAfter: ID = ""
+    endingBefore: ID = ""
+  ): ResultStripeCustomers
+
+  "Get customer"
+  customer(id: ID!): ResultStripeCustomer
+}

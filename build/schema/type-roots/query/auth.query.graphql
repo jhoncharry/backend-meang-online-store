@@ -1,0 +1,16 @@
+"Definitions of root types"
+type Query {
+  "User login"
+  login(email: String!, password: String!): ResultLogin
+  "User login"
+  loginRestricted(email: String!, password: String!): ResultLogin
+  "Logout"
+  logout: ResultLogout
+  "Renew token"
+  renewToken: ResultUserToken
+  "Authentication by token"
+  me: ResultUserToken
+}
+
+# TODO: Check login, renewToken and me types, because we can simplify that types, for example: Result login return User that has the same values from UserToken
+# TODO: me Types has ResultUserToken where there's a UserToken but maybe in future we need to add more field, the best idea is set  User type

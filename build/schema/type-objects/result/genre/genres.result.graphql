@@ -1,0 +1,10 @@
+type ResultGenres implements Result {
+  "Operation status"
+  status: Boolean!
+  "Operation message to provide feedback"
+  message: String!
+  "genres information"
+  genres: [Genre!]!
+  "Info result (optinal)"
+  info: ResultInfo
+}

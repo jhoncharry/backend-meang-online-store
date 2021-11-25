@@ -58,7 +58,6 @@ class AuthService {
       throw new BadRequestError("This user hasn't been activated");
     }
 
-    // FIXME Check if we need contains for a simple string o includes when using Array of string
     if (!existingUser.role.includes("ADMIN")) {
       throw new BadRequestError("You can't access this page");
     }

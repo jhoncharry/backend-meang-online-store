@@ -1,0 +1,10 @@
+type Mail {
+  "Who sends?"
+  from: String
+  "Receiver"
+  to: String!
+  "Subject"
+  subject: String!
+  "Email content with html"
+  html: String!
+}

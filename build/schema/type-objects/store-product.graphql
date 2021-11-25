@@ -1,0 +1,12 @@
+"Type of object for saving save store product information about games"
+type StoreProduct {
+  id: ID!
+  productId: ID!
+  product: Product!
+  platformId: ID!
+  platform: Platform!
+  active: Boolean
+  price: Float!
+  stock: Int!
+  relationalProducts: [StoreProduct]
+}

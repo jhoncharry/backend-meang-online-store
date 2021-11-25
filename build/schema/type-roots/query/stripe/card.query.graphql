@@ -1,0 +1,13 @@
+"Definitions of root types"
+type Query {
+  "Get cards"
+  cards(
+    customer: ID!
+    limit: Int = 5
+    startingAfter: ID = ""
+    endingBefore: ID = ""
+  ): ResultStripeCards
+
+  "Get card"
+  card(customer: ID!, card: ID!): ResultStripeCard
+}

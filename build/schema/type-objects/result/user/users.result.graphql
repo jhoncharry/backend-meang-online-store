@@ -1,0 +1,10 @@
+type ResultUsers implements Result {
+  "Operation status"
+  status: Boolean!
+  "Operation message to provide feedback"
+  message: String!
+  "Database user registration list (Clients / Admins)"
+  users: [User!]!
+  "Info result (optinal)"
+  info: ResultInfo
+}
