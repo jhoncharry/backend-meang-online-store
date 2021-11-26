@@ -1,4 +1,0 @@
-input StoreProductStockInput {
-  id: ID!
-  increment: Int!
-}

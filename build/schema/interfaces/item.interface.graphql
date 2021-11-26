@@ -1,6 +1,0 @@
-"Interface to specify properties coming from the Rawg API."
-interface Item {
-  id: ID!
-  name: String!
-  slug: String!
-}

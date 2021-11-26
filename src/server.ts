@@ -22,6 +22,7 @@ import contextModel from "./helpers/context-project";
 // Start function
 async function init() {
   const app = express();
+  app.set("trust proxy", true);
 
   // CORS config
   // app.use(cors());
@@ -33,7 +34,7 @@ async function init() {
     cookieSession({
       signed: false,
       // secure: process.env.NODE_ENV !== "test"  // ONLY FOR DEV ENVIRONMENT OR HTTPS CONNECTION (CHECK IF IT'S WORKING IN HTTPS CONNECTIONS)
-      secure: false, // IN ORDER TO DISABLE HTTPS checking, CASUE I HAVE ONLY HTTP AT THE MOMENT AND COOKIES WORKS WITH HTTPS
+      secure: process.env.NODE_ENV !== ("dev" || "test"), // IN ORDER TO DISABLE HTTPS checking, CASUE I HAVE ONLY HTTP AT THE MOMENT AND COOKIES WORKS WITH HTTPS
     })
   );
 
@@ -50,7 +51,7 @@ async function init() {
   server.applyMiddleware({
     app,
     cors: {
-      origin: ["http://localhost:4200", "http://localhost:4500"],
+      origin: [process.env.CLIENT_PUBLIC!, process.env.CLIENT_ADMIN!],
       credentials: true,
     },
   });

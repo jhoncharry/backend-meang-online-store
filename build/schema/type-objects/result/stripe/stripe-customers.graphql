@@ -1,6 +1,0 @@
-type ResultStripeCustomers implements Result {
-  status: Boolean!
-  message: String!
-  hasMore: Boolean!
-  customers: [StripeCustomer]
-}

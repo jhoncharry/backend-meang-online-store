@@ -1,9 +1,0 @@
-type Query {
-  "Get charges by customer"
-  chargesByCustomer(
-    customer: ID!
-    limit: Int = 5
-    startingAfter: ID = ""
-    endingBefore: ID = ""
-  ): ResultStripeCharges
-}

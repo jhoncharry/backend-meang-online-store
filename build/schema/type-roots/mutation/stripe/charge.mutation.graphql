@@ -1,3 +1,0 @@
-type Mutation {
-  chargeOrder(payment: ChargeInput!, stockChange:[StoreProductStockInput!]!): ResultStripeCharge
-}

@@ -26,7 +26,7 @@ class EmailService {
     }
 
     const token = await JWT.sign({ user: { _id: checkUser._id, email } });
-    const html = `to activate your account click on the following button <a href="${process.env.CLIENT_URL}/#/active/${token}">Click here</a>`;
+    const html = `to activate your account click on the following button <a href="${process.env.CLIENT_PUBLIC}/#/active/${token}">Click here</a>`;
 
     const msg = {
       from: {
@@ -96,7 +96,7 @@ class EmailService {
     }
 
     const token = await JWT.sign({ user: { _id: checkUser._id, email } });
-    const html = `to reset your password click on the following button <a href="${process.env.CLIENT_URL}/#/reset/${token}">Click here</a>`;
+    const html = `to reset your password click on the following button <a href="${process.env.CLIENT_PUBLIC}/#/reset/${token}">Click here</a>`;
 
     const msg = {
       from: {

@@ -1,8 +1,0 @@
-type ResultLogin implements Result {
-  "Operation status"
-  status: Boolean!
-  "Operation message to provide feedback"
-  message: String!
-  "User information"
-  user: User
-}

@@ -1,4 +1,0 @@
-type Subscription {
-  updateStockProduct: StoreProduct
-  selectProductStockUpdate(id: Int!): StoreProduct
-}

@@ -1,8 +1,0 @@
-type ResultGenre implements Result {
-  "Operation status"
-  status: Boolean!
-  "Operation message to provide feedback"
-  message: String!
-  "genre information"
-  genre: Genre
-}

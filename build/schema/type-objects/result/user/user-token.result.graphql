@@ -1,8 +1,0 @@
-type ResultUserToken implements Result {
-  "Operation status"
-  status: Boolean!
-  "Operation message to provide feedback"
-  message: String!
-  "user information from the token"
-  user: UserToken
-}

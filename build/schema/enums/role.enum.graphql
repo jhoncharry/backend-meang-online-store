@@ -1,5 +1,0 @@
-"User Roles"
-enum Role {
-  CLIENT
-  ADMIN
-}
