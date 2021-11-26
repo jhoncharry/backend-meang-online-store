@@ -90,6 +90,7 @@ typings/
 # dotenv environment variables file
 
 .env.development
+.env.production
 .env.staging
 .env.test
 
