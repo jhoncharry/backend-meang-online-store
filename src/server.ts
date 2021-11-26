@@ -34,7 +34,7 @@ async function init() {
     cookieSession({
       signed: false,
       // secure: process.env.NODE_ENV !== "test"  // ONLY FOR DEV ENVIRONMENT OR HTTPS CONNECTION (CHECK IF IT'S WORKING IN HTTPS CONNECTIONS)
-      secure: process.env.NODE_ENV !== ("dev" || "test"), // IN ORDER TO DISABLE HTTPS checking, CASUE I HAVE ONLY HTTP AT THE MOMENT AND COOKIES WORKS WITH HTTPS
+      secure: process.env.NODE_ENV !== ("development" || "test"), // IN ORDER TO DISABLE HTTPS checking, CASUE I HAVE ONLY HTTP AT THE MOMENT AND COOKIES WORKS WITH HTTPS
       sameSite: "none",
     })
   );
