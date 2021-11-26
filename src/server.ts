@@ -47,6 +47,7 @@ async function init() {
     schema,
     context: contextModel,
     introspection: true,
+    playground: true,
   });
 
   server.applyMiddleware({
